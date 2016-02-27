@@ -1,0 +1,13 @@
+h1 {
+    text-decoration:none;
+    text-indent: 60px;
+    border:0;
+    width : 700px;
+    height : 50px;
+    margin : 0;
+    padding : 0;
+    left: 0px;
+    top: 5px;
+    position: relative;
+    background : url(plato.png) no-repeat 0 0;
+}
