@@ -10,7 +10,7 @@ Author:
     Martijn J. Schuemie [aut],
     Patrick B. Ryan [aut],
 
-Maintainer: Peter R. Rijnbek <prijnbeek@ohdsi.org>
+Maintainer: Peter R. Rijnbeek <prijnbeek@ohdsi.org>
 Description: A user-interface (Shiny) for creating patient level prediction models. Given a
     cohort of interest and an outcome of interest, the package can use data in the
     Common Data Model to build a large set of features. These features can then
