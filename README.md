@@ -24,6 +24,7 @@ Requires R (version 3.2.2 or higher). Installation on Windows requires [RTools](
 
 Dependencies
 ============
+ * PatientLevelPrediction
  * Cyclops
  * DatabaseConnector
  * SqlRender
@@ -60,4 +61,4 @@ PatientLevelPredictionUI is being developed in R Studio.
 Alpha
 
 # Acknowledgements
-- This project is supported in part through the National Science Foundation grant IIS 1251151.
+- To Add
