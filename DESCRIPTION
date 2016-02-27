@@ -1,6 +1,6 @@
-Package: PatientLevelPrediction
+Package: PatientLevelPredictionUI
 Type: Package
-Title: Package for patient level prediction using data in the OMOP Common Data
+Title: Package for a UI for patient level prediction using data in the OMOP Common Data
     Model
 Version: 1.1.0
 Date: 2016-27-2
