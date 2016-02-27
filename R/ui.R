@@ -29,7 +29,7 @@ shinyUI(
              p("You can either load already extracted PLP data here or generate it below",
                a(href="https://raw.githubusercontent.com/OHDSI/PatientLevelPrediction/master/inst/doc/BuildingPredictiveModels.pdf", "(more Information)")
              ),
-             actionButton("loadPLP", "Load Data"),
+             fileInput("plpFile", "Load Data"),
              hr(),
              fluidRow(column(width=6,
                  fileInput("selSQL", "Select SQL to run",accept = c('.sql','txt'))
@@ -39,6 +39,7 @@ shinyUI(
                  )
               ),
              
+             # ToDo: fill from a query to the CDM
              fluidRow(column(width=6,
                         selectInput("selCohort", label = "Select Cohort", 
                                          choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3), 
