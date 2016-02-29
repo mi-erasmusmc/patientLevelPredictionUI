@@ -109,8 +109,29 @@ shinyUI(
              )
              
     ),
+   
+#========================================================
+#  Feature tab
+#  Gives the user the opportunity to chain various
+#  feature selection methods and add their own function
+#========================================================
     tabPanel("Features"),
+
+#========================================================
+#  Model tab
+#  Gives the user the opportunity to select various 
+#  models and add ther own - multiple outcomes option?
+#  Parameters condition on selected method
+#========================================================
     tabPanel("Models"),
+
+#========================================================
+#  Results tab
+#  had loading status during model training
+#  contains the results of the model - summary table and
+#  various interactive plots that the user can scroll between
+#  had save model + results button (TODO)
+#========================================================
     tabPanel("Results",
              fluidRow(
                column(width=6,
