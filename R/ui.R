@@ -9,293 +9,146 @@ customHeaderPanel <- function(title,windowTitle=title){
   )
 }
 
-shinyUI(
-  navbarPage("PLATO",
-   # customHeaderPanel("PLATO",windowTitle="PLATO"),
-             
-    tabPanel("Home",
-       column(width=5,
-              imageOutput("image1")        
-       ),
-       column(width=6,
-              p(h3("Person-Level Assessment of Treatment Outcomes"),
-              p("PLATO is an integrated framework to allow all users to apply the library of predictive models developed to produce individualized risk for all medical interventions and all health outcomes of interest, based on personal demographics, medical history, and health behaviors.")),  
-              p(a(href="http://www.ohdsi.org/analytic-tools/plato-for-patient-level-prediction/", "More Information"))
-       )
-       
-    ),
-    
-    tabPanel("Data",
-             p("You can either load already extracted PLP data here or generate it below",
-               a(href="https://raw.githubusercontent.com/OHDSI/PatientLevelPrediction/master/inst/doc/BuildingPredictiveModels.pdf", "(more Information)")
-             ),
-             fileInput("plpFile", "Load Data"),
-             hr(),
-             fluidRow(column(width=6,
-                 fileInput("selSQL", "Select SQL to run",accept = c('.sql','txt'))
-                      ),
-                 column(width=6,
-                        actionButton("runSQL", "runSQL")     
-                 )
-              ),
-             
-             # ToDo: fill from a query to the CDM
-             fluidRow(column(width=6,
-                        selectInput("selCohort", label = "Select Cohort", 
-                                         choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3), 
-                                         selected = 1)
-             ),
-             column(width=6,
-                    selectInput("selOutcome", label = "Select Outcome", 
-                                choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3), 
-                                selected = 1)
-                  )
-             ),
-             fluidRow(column(width=6,
-             checkboxGroupInput("covariates1", "Select covariates",
-                                c("Demographics",
-                                  "ConditionOccurrence",
-                                  "ConditionOccurrence365d",
-                                  "ConditionOccurrence30d",
-                                  "ConditionOccurrenceInpt180d",
-                                  "ConditionEra",
-                                  "ConditionEraEver",
-                                  "ConditionEraOverlap",
-                                  "ConditionGroup",
-                                  "DrugExposure",
-                                  "DrugExposure365d",
-                                  "DrugExposure30d",
-                                  "DrugEra",
-                                  "DrugEra365d",
-                                  "DrugEra30d",
-                                  "DrugEraOverlap",
-                                  "DrugEraEver",
-                                  "DrugGroup",
-                                  "ProcedureOccurrence",
-                                  "ProcedureOccurrence365d",
-                                  "ProcedureOccurrence30d",
-                                  "ProcedureGroup")
-                                  ,inline = FALSE)),
-             column(width=6,
-             checkboxGroupInput("covariates2", "",
-                                c("Observation",
-                                  "Observation365d",
-                                  "Observation30d",
-                                  "ObservationCount365d",
-                                  "Measurement",
-                                  "Measurement365d",
-                                  "Measurement30d",
-                                  "MeasurementCount365d",
-                                  "MeasurementBelow",
-                                  "MeasurementAbove",
-                                  "ConceptCounts",
-                                  "RiskScores",
-                                  "RiskScoresCharlson",
-                                  "RiskScoresDCSI",
-                                  "RiskScoresCHADS2",
-                                  "RiskScoresCHADS2VASc",
-                                  "InteractionYear",
-                                  "InteractionMonth")
-                                ,inline = FALSE))
-             
-                ),
-              fluidRow(column(width=6,
-                             actionButton("extractSata", "Extract Data")   
-               
-              ),
-              column( width=6 
-               )
-               
-             )
-             
-    ),
-   
-#========================================================
-#  Feature tab
-#  Gives the user the opportunity to chain various
-#  feature selection methods and add their own function
-#========================================================
-    tabPanel("Features",
-             
-             
-             # (TODO) would be good to have option of second, third,... models
-             column(4, wellPanel(
-               selectInput("featSel", label = "Select Method", 
-                           choices = list("Filter covariates" = 1, 
-                                          "Wrapper GA" = 2, 
-                                          "Lasso logistic regression" = 3,
-                                          "Variable Importance" = 4,
-                                          "Generalised Low Rank Models"=5), 
-                           selected = 1)
-             ),
-             wellPanel(
-               h5("Selected Feature Selection:"),
-               verbatimTextOutput("features"),
-               actionButton("resetFeatures", "Reset")
-               #htmlOutput("models")
-             )
-             
-             
-             ),
-             
-             column(7,
-                    "Pick feature selection and settings and add.",
-                    
-                    # With the conditionalPanel, the condition is a JavaScript
-                    # expression. In these expressions, input values like
-                    # input$n are accessed with dots, as in input.n
-                    conditionalPanel("input.featSel==1",
-                                     uiOutput("params.1", container = div)
-                    ), # can i use loop?
-                    conditionalPanel("input.featSel==2",
-                                     uiOutput("params.2", container = div)
-                    ),
-                    conditionalPanel("input.featSel==3",
-                                     uiOutput("params.3", container = div)
-                    ),
-                    conditionalPanel("input.featSel==4",
-                                     uiOutput("params.4", container = div)
-                    )
-                    ,
-                    conditionalPanel("input.featSel==5",
-                                     uiOutput("params.5", container = div)
-                    )
-             )
-             
-             # option to add own model:
-             #fileInput(inputId, label, multiple = FALSE, accept = NULL, width = NULL)
-             #installExprFunction
-             
-             # This might be better than the scroll for some cases:
-             # numericInput(inputId, label, value, min = NA, max = NA, step = NA,width = NULL)
-             
-             
-    ),
+shiny::shinyUI(
+    shiny::fluidPage(
+        shiny::navbarPage("PLATO",
+                         # customHeaderPanel("PLATO",windowTitle="PLATO"),
+                         
+                         tabPanel("Home",
+                                  column(width=5,
+                                         imageOutput("image1")        
+                                  ),
+                                  column(width=6,
+                                         p(h3("Person-Level Assessment of Treatment Outcomes"),
+                                           p("PLATO is an integrated framework to allow all users to apply the library of predictive models developed to produce individualized risk for all medical interventions and all health outcomes of interest, based on personal demographics, medical history, and health behaviors.")),  
+                                         p(a(href="http://www.ohdsi.org/analytic-tools/plato-for-patient-level-prediction/", "More Information"))
+                                  )
+                                  
+                         ),
 
-#========================================================
-#  Model tab
-#  Gives the user the opportunity to select various 
-#  models and add ther own - multiple outcomes option?
-#  Parameters condition on selected method
-#========================================================
-    tabPanel("Models",
-             # (TODO) would be good to have option of second, third,... models
-             column(4, wellPanel(
-               selectInput("model", label = "Select Model", 
-                           choices = list("Lasso Logistic Regression" = 1, 
-                                          "Gradient Boosting Machine" = 2, 
-                                          "KNN" = 3,
-                                          "Random Forest" = 4,
-                                          "Neural Network"=5,
-                                          "Support Vector Machine"=6 ), 
-                           selected = 1)
-             ),
-             wellPanel(
-               h5("Selected Models:"),
-               verbatimTextOutput("models"),
-               actionButton("runModel", "Run Model/s"),
-               actionButton("resetModels", "Reset")
-               #htmlOutput("models")
-             )
-             
-             
-             ),
-             
-             column(7,
-                    "Pick model/parameter settings and add model.",
-                    
-                    # With the conditionalPanel, the condition is a JavaScript
-                    # expression. In these expressions, input values like
-                    # input$n are accessed with dots, as in input.n
-                    conditionalPanel("input.model==1",
-                                     uiOutput("modelparams.1", container = div)
-                    ), # can i use loop?
-                    conditionalPanel("input.model==2",
-                                     uiOutput("modelparams.2", container = div)
-                    ),
-                    conditionalPanel("input.model==3",
-                                     uiOutput("modelparams.3", container = div)
-                    ),
-                    conditionalPanel("input.model==4",
-                                     uiOutput("modelparams.4", container = div)
-                    )
-                    ,
-                    conditionalPanel("input.model==5",
-                                     uiOutput("modelparams.5", container = div)
-                    )
-                    ,
-                    conditionalPanel("input.model==6",
-                                     uiOutput("modelparams.6", container = div)
-                    )
-                    
-                    
-             ) 
-             
-             
-             ),
+            #==============================================
+            # Check plp develop installed
+            #==============================================
+            # the data tab should have 3 conditional tabs - data loader/data extractor/data viewer
+            shiny::tabPanel("Install",
+                     shiny::mainPanel("Install study R packages:",
+                                      'Before running this package installer, please shut down any other R connections.',
+                                      DT::dataTableOutput("packageList"),
 
-#========================================================
-#  Results tab
-#  had loading status during model training
-#  contains the results of the model - summary table and
-#  various interactive plots that the user can scroll between
-#  had save model + results button (TODO)
-#========================================================
-    tabPanel("Results",
-             fluidRow(
-               column(width=6,
-                  p("This applicatin is developed in OHDSI",
-                        a(href="http://www.ohdsi.org/analytic-tools/plato-for-patient-level-prediction/", "More Information")
-                      ),
-                      p(
-                        a(href="http://forums.ohdsi.org/tags/c/researchers/patientprediction", "Forum"))
-                      )
-    ),
-    fluidRow(
-      column(width=9,
-             lineChartOutput("mychart")
-      ),
-      column(width=3,
-             sliderInput("sinePhase", "Sine phase", -180, 180, 0, step=10,
-                         animate=animationOptions(interval=100, loop=TRUE)),
-             sliderInput("sineAmplitude", "Sine amplitude", -2, 2, 1, step=0.1,
-                         animate=animationOptions(interval=100, loop=TRUE))
-      )         
+                                      shiny::p('Click to install PatientLevelPrediction R Package and missing dependancies',
+                     shiny::actionButton('install', 'Install'))
+                         )
+
+
+
+
+                     ),
+
+            
+            #========================================================
+            #  Data Extraction
+            #========================================================
+            shiny::tabPanel("Extract Data",
+                            
+                            shiny::tabsetPanel(id ="dataTabs",
+                                               shiny::tabPanel(title = "Connection Settings", value="connection",
+                                                               shiny::h4("Connection Settings"),
+                                                               shiny::uiOutput("connectSet")),
+                                               shiny::tabPanel(title = "Data", value="dataExtract",
+                                                               shiny::h4("Connection Status"),
+                                                               shiny::tableOutput("connectionStatus"),
+                                                               shiny::h4("Extract Model Data"),
+                                                               shiny::uiOutput("extractData")),
+                                               
+                                               #shiny::uiOutput("runAnalysis")
+                                               shiny::tabPanel(title = "Cohorts", value="cohorts",
+                                                               shiny::h4("Conhorts in database"),
+                                                               DT::dataTableOutput("cohorts")))
+                            
+                            # will add tab for cohort description visulisations here
+                            ),
+                            
+                            
+                            
+            
+            #========================================================
+            #  Training settings
+            #========================================================
+            shiny::tabPanel("Train Model",
+                            shiny::uiOutput("dataSettings"),
+                                               shiny::uiOutput("popSettings"),
+                                               shiny::uiOutput("modelSettings")
+                            
+                            
+                            
+                            
+            ),
+
+            #========================================================
+            #  Send results
+            #========================================================
+            shiny::tabPanel("Explorer",
+                            shiny::uiOutput("visSel"),
+                            shiny::tabsetPanel(id ="analysisTabs",
+                                               shiny::tabPanel(title = "All Models", value="panel_allmodes",
+                                                               shiny::h4("All Models"),
+                                                               DT::dataTableOutput("allmodels")),
+                                               shiny::tabPanel(title = "Performance", value="panel_permform",
+                                                               shiny::h4("Performance Metrics"),
+                                                               DT::dataTableOutput("performance")),
+                                               shiny::tabPanel(title = "Options", value="panel_options",
+                                                               shiny::h4("Options"),
+                                                               DT::dataTableOutput("options")),
+                                               shiny::tabPanel(title = "Variables", value="panel_varimp",
+                                                               shiny::h4("Variable Importance"),
+                                                               DT::dataTableOutput("varImp")),
+                                               shiny::tabPanel(title = "Attrition", value="panel_attrition",
+                                                               shiny::h4("Attrition"),
+                                                               DT::dataTableOutput("attrition")),
+                                               shiny:: tabPanel(title = "ROC", value="panel_roc",
+                                                                shiny::h4("Test"),
+                                                                shiny::plotOutput("rocPlot"),
+                                                                shiny::h4("Validation"),
+                                                                shiny::plotOutput("rocPlotVal"),
+                                                                shiny::h4("Train"),
+                                                                shiny::plotOutput("rocPlotTrain")),
+                                               shiny::tabPanel(title = "Box Plot", value="panel_box",
+                                                               shiny::h4("Test"),
+                                                               shiny::plotOutput("boxPlot"),
+                                                               shiny::h4("Train"),
+                                                               shiny::plotOutput("boxPlotTrain")
+                                                               ),
+                                               shiny::tabPanel(title = "Calibration", value="panel_cal",
+                                                               shiny::h4("Test"),
+                                                               shiny::plotOutput("calPlot"),
+                                                               shiny::h4("Train"),
+                                                               shiny::plotOutput("calPlotTrain")),
+                                               shiny::tabPanel(title = "Preference", value="panel_pref",
+                                                               shiny::h4("Test"),
+                                                               shiny::plotOutput("prefPlot"),
+                                                               shiny::h4("Train"),
+                                                               shiny::plotOutput("prefPlotTrain"))
+                            )
+
+            ),
+            
+            shiny::tabPanel("Apply Models",
+                            "Here you can select a model and apply it to",
+                                             "predict the outcome using data extracted from a",
+                                             "new database (e.g. apply model trained on CDM_JMDC_V5",
+                                             "to data extracted from CDM_OPTUM_V5",
+                          
+                            shiny::uiOutput("apply")
+                              
+                            
+                              
+                              
+                            
+                            
+                            
+            )
+
+
+        )
+        )
     )
-  ),
-  tabPanel("Settings",
-     p(h2("Connection Configuration")),
- 
-     # all inputs for the database connection
-     selectInput("dbms", label = "DBMS", 
-                 choices = list("postgresql" = 1, "Oracle" = 2), 
-                 selected = 1),
-     
-     br(),
-     
-     textInput("server", label = "Server", value = "localhost/ohdsi"),
-     br(),
-     
-     textInput("user", label = "User", value = "joe"),
-     br(),
-     
-     textInput("password", label = "Password", value = "supersecret"),
-     br(),
-
-     textInput("cdmDatabaseSchema", label = "cdmDatabaseSchema", value = "my_cdm_data"),
-     br(),
- 
-     textInput("cohortsDatabaseSchema", label = "cohortsDatabaseSchema", value = "my_results"),
-     br(),
-  
-     selectInput("cdmVersion", label = "cdmVersion", 
-                 choices = list("4" = 1, "5" = 2), 
-                 selected = 2)
-    
-  )
-)
-)
-
-
-
-
